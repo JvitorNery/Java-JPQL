@@ -1,5 +1,7 @@
 package br.com.fiap.view;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,6 +13,7 @@ import br.com.fiap.dao.impl.ClienteDAOImpl;
 import br.com.fiap.dao.impl.PacoteDAOImpl;
 import br.com.fiap.entity.Cliente;
 import br.com.fiap.entity.Pacote;
+import br.com.fiap.entity.Transporte;
 
 public class ConsoleView {
 
@@ -44,6 +47,20 @@ public class ConsoleView {
 		for(Cliente cli : clientes2){
 			System.out.println(cli.getId() + " nome: "+cli.getNome()+" cpf: "+cli.getCpf());
 		}
+		
+		Transporte transporte = new Transporte("COMETA");
+		
+		List<Pacote> pacotes3 = dao.buscarPorTransporte(transporte);
+		
+		/*if(pacotes3 != null){
+			for(Pacote pacote : pacotes3){
+				System.out.println(pacote.getDescricao());
+			}
+		}*/
+		
+		//List<Pacote> pacotes4 = dao.buscarPor1(transporte.getClass(), transporte.getEmpresa());
+		
+		//List<Pacote> pacotes4 = dao.buscarPorDataSaida(new GregorianCalendar(15,Calendar.APRIL ,2008),new GregorianCalendar(20,Calendar.APRIL ,2008));
 		
 		em.close();
 		System.exit(0);

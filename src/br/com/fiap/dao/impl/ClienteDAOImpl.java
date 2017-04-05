@@ -29,4 +29,10 @@ public class ClienteDAOImpl extends GenericDAOImpl<Cliente,Integer> implements C
 		return query.getResultList();
 	}
 
+	@Override
+	public List<Cliente> buscarPorEstado(String estado) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -10,4 +10,5 @@ public interface ClienteDAO extends GenericDAO<Cliente,Integer>{
 	
 	List<Cliente> buscarPorDiasDaReserva(int minimo, int maximo);
 	
+	List<Cliente> buscarPorEstado(String estado);
 }
