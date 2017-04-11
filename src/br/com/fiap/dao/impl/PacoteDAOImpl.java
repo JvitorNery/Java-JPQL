@@ -15,18 +15,19 @@ public class PacoteDAOImpl extends GenericDAOImpl<Pacote,Integer> implements Pac
 	public PacoteDAOImpl(EntityManager entityManager) {
 		super(entityManager);
 	}
-	
+
 	@Override
-	public List<Pacote> listar(){
-		TypedQuery<Pacote> query = em.createQuery("from Pacote",Pacote.class);
+	public List<Pacote> listar() {
+		TypedQuery<Pacote> query = 
+				em.createQuery("from Pacote",Pacote.class);
 		return query.getResultList();
 	}
 
 	@Override
-	public List<Pacote> buscarPorPreco(float minimo, float maximo) {
-		TypedQuery<Pacote> query = em.createQuery("from Pacote p where p.preco between :min and :max",Pacote.class);
-		query.setParameter("min", minimo);
-		query.setParameter("max", maximo);		
+	public List<Pacote> buscarPorPreco(float maximo) {
+		TypedQuery<Pacote> query = em.createQuery(
+				"from Pacote p where p.preco < :pre",Pacote.class);
+		query.setParameter("pre", maximo);
 		return query.getResultList();
 	}
 
@@ -36,15 +37,27 @@ public class PacoteDAOImpl extends GenericDAOImpl<Pacote,Integer> implements Pac
 			"from Pacote p where p.transporte = :tr",Pacote.class);
 		query.setParameter("tr", transporte);
 		return query.getResultList();
-	}
-
-	@Override
-	public List<Pacote> buscarPorDataSaida(Calendar inicio, Calendar fim) {
-		TypedQuery<Pacote> query = em.createQuery("from Pacote p where p.dt_saida between :min and :max",Pacote.class);
-		query.setParameter("min", inicio);
-		query.setParameter("max", fim);		
-		return query.getResultList();
+		
 	}
 	
+	public List<Pacote> buscarPorData(Calendar inicio, Calendar fim){
+		return em.createQuery("from Pacote p where p.dataSaida between :i and :f", Pacote.class).setParameter("i",inicio).setParameter("f",fim).getResultList();
+		
+	}
+	
+	public long buscarQTDPorData(Calendar inicio, Calendar fim){
+		return em.createQuery("select count(id) from Pacote p where p.dataSaida between :i and :f", Long.class).setParameter("i",inicio).setParameter("f",fim).getSingleResult();
+		
+	}
 
 }
+
+
+
+
+
+
+
+
+
+

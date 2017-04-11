@@ -7,8 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import br.com.fiap.dao.GenericDAO;
-import br.com.fiap.entity.Pacote;
-import br.com.fiap.entity.Transporte;
 import br.com.fiap.exception.DBException;
 import br.com.fiap.exception.IdNotFoundException;
 
@@ -61,31 +59,18 @@ public class GenericDAOImpl<T,K> implements GenericDAO<T, K>{
 			throw new DBException("Erro no commit", e);
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<T> listar2() {
-		String classeName = classe.getTypeName();
-			TypedQuery<T> query = em.createQuery("from "+classe.getName(),classe);
-			return query.getResultList();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<T> buscarPor1(Class entity, String atributeName) {
-		//Class clazze2 = entity.getClass();
-		
-		//TypedQuery<T> queryTrue = em.createQuery("from "+clazze2.getName()+" p where p."+atributeName+" = :parameter",clazze2);
-		TypedQuery<T> queryTrue = em.createQuery("from "+entity.getName()+" p where p."+atributeName+" = :parameter",entity);
-		queryTrue.setParameter("parameter", atributeName);
-		
-			return queryTrue.getResultList();	
-	}
 
 	@Override
-	public List<T> buscarPor2(T entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<T> listar() {
+		TypedQuery<T> query = 
+			em.createQuery("from " + classe.getName() ,classe);
+		return query.getResultList();
 	}
 
-	
-
 }
+
+
+
+
+
+
