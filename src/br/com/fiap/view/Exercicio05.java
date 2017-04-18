@@ -14,21 +14,21 @@ import br.com.fiap.entity.Pacote;
 public class Exercicio05 {
 
 	public static void main(String[] args) {
-
-		EntityManager em = EntityManagerFactorySingleton.getInstance().createEntityManager();
+		EntityManager em = EntityManagerFactorySingleton
+				.getInstance().createEntityManager();
 
 		PacoteDAO dao = new PacoteDAOImpl(em);
 		
 		List<Pacote> lista = dao.buscarPorData(
-				new GregorianCalendar(2017,Calendar.APRIL,1),
-				new GregorianCalendar(2017,Calendar.DECEMBER,1));
+			new GregorianCalendar(2017, Calendar.JANUARY, 1), 
+			new GregorianCalendar(2017, Calendar.DECEMBER,30));
 		
-		for(Pacote pacote : lista){
+		for (Pacote pacote : lista) {
 			System.out.println(pacote.getDescricao());
 		}
 		
 		em.close();
 		System.exit(0);
 	}
-
+	
 }

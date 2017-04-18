@@ -6,15 +6,24 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+@NamedQueries({
+	@NamedQuery(name="Cliente.porCpf",
+			query="select c from Cliente c where c.cpf = :cpf"),
+		@NamedQuery(name="Cliente.porMesAniversario",
+			query="select c from Cliente c where "
+					+ "month(c.dataNascimento) = :mes")
+})
 @Entity
 @SequenceGenerator(name="seqCliente", sequenceName="SEQ_CLIENTE", allocationSize=1)
 public class Cliente {
@@ -33,7 +42,7 @@ public class Cliente {
 	@Column(name="DT_NASCIMENTO")
 	private Calendar dataNascimento;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Endereco endereco;
 	
 	@ManyToMany(cascade=CascadeType.PERSIST)

@@ -12,16 +12,19 @@ import br.com.fiap.entity.Cliente;
 public class Exercicio06 {
 
 	public static void main(String[] args) {
-		
 		EntityManager em = EntityManagerFactorySingleton.getInstance().createEntityManager();
 		
 		ClienteDAO dao = new ClienteDAOImpl(em);
 		
 		List<Cliente> lista = dao.buscar("a", "a");
 		
-		for(Cliente cliente : lista){
-			System.out.println(cliente.getNome() +" - "+ cliente.getCpf());
+		for (Cliente cliente : lista) {
+			System.out.println(cliente.getNome() + " " 
+				+ cliente.getEndereco().getCidade().getNome());
 		}
+		
+		em.close();
+		System.exit(0);
 	}
-
+	
 }

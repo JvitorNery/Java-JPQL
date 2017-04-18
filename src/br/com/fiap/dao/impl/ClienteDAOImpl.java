@@ -8,7 +8,6 @@ import javax.persistence.TypedQuery;
 
 import br.com.fiap.dao.ClienteDAO;
 import br.com.fiap.entity.Cliente;
-import br.com.fiap.entity.Endereco;
 
 public class ClienteDAOImpl extends GenericDAOImpl<Cliente,Integer> implements ClienteDAO{
 
@@ -36,17 +35,34 @@ public class ClienteDAOImpl extends GenericDAOImpl<Cliente,Integer> implements C
 
 	@Override
 	public List<Cliente> buscar(String nome, String cidade) {
-		return em.createQuery("from Cliente c where c.nome like %:n and c.endereco like :c",Cliente.class).setParameter("n", "%"+nome+"%").setParameter("c", "%"+cidade+"%").getResultList();
+		return em.createQuery("from Cliente c where c.nome like "
+			+ ":n and c.endereco.cidade.nome like :c",Cliente.class)
+			.setParameter("n", "%" + nome + "%")
+			.setParameter("c", "%" + cidade + "%")
+			.getResultList();
 	}
 
 	@Override
 	public List<Cliente> buscarPorEstados(Collection<String> estados) {
-		return em.createQuery("from Cliente c where c.endereco.cidade.uf in :e",Cliente.class).setParameter("e",estados).getResultList();
+		return em.createQuery("from Cliente c where "
+				+ "c.endereco.cidade.uf in :estados",Cliente.class)
+				.setParameter("estados", estados)
+				.getResultList();
+	}
+	
+	@Override
+	public long buscarQuantidade(){
+		return em.createQuery("select count(c) from Cliente c",Long.class).getSingleResult();
 	}
 
 	@Override
-	public long buscarQTD() {
-		return em.createQuery("select count(id) FROM Cliente",Long.class).getSingleResult();
+	public Cliente buscarPorCPF(String cpf) {
+		return em.createNamedQuery("Cliente.porCpf",Cliente.class).setParameter("cpf", cpf).getSingleResult();
+	}
+
+	@Override
+	public List<Cliente> buscarPorDataAniversarioMes(int mes) {
+		return em.createNamedQuery("Cliente.porMesAniversario",Cliente.class).setParameter("mes", mes).getResultList();
 	}
 
 }
